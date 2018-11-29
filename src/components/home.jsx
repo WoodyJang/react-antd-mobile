@@ -1,182 +1,117 @@
 import React, { Component } from 'react';
-
-import { Menu, ActivityIndicator, NavBar } from 'antd-mobile';
-
-const data = [
-  {
-    value: '1',
-    label: 'Food',
-    children: [
-      {
-        label: 'All Foods',
-        value: '1',
-        disabled: false,
-      },
-      {
-        label: 'Chinese Food',
-        value: '2',
-      },
-      {
-        label: 'Hot Pot',
-        value: '3',
-      },
-      {
-        label: 'Buffet',
-        value: '4',
-      },
-      {
-        label: 'Fast Food',
-        value: '5',
-      },
-      {
-        label: 'Snack',
-        value: '6',
-      },
-      {
-        label: 'Bread',
-        value: '7',
-      },
-      {
-        label: 'Fruit',
-        value: '8',
-      },
-      {
-        label: 'Noodle',
-        value: '9',
-      },
-      {
-        label: 'Leisure Food',
-        value: '10',
-      },
-    ],
-  },
-  {
-    value: '2',
-    label: 'Supermarket',
-    children: [
-      {
-        label: 'All Supermarkets',
-        value: '1',
-      },
-      {
-        label: 'Supermarket',
-        value: '2',
-        disabled: true,
-      },
-      {
-        label: 'C-Store',
-        value: '3',
-      },
-      {
-        label: 'Personal Care',
-        value: '4',
-      },
-    ],
-  },
-  {
-    value: '3',
-    label: 'Extra',
-    isLeaf: true,
-    children: [
-      {
-        label: 'you can not see',
-        value: '1',
-      },
-    ],
-  },
-];
+import { TabBar } from 'antd-mobile';
+import './home.scss';
 
 class home extends Component {
-  constructor(...args) {
-    super(...args);
+  constructor(props) {
+    super(props);
     this.state = {
-      initData: '',
-      show: false,
+      selectedTab: 1,
+      hidden: false,
+      fullScreen: false,
+      tabItems: [
+        {
+          id: 1,
+          name: '赛事直播',
+          class: 'living',
+          classActive: 'living-active',
+        },
+        {
+          id: 2,
+          name: 'NBA资讯',
+          class: 'news',
+          classActive: 'news-active',
+        },
+        {
+          id: 3,
+          name: '球队战绩',
+          class: 'rank',
+          classActive: 'rank-active',
+        },
+        {
+          id: 4,
+          name: '数据统计',
+          class: 'stats',
+          classActive: 'stats-active',
+        },
+      ],
+      tabBarItem: [],
     };
   }
-  onChange = value => {
-    let label = '';
-    data.forEach(dataItem => {
-      if (dataItem.value === value[0]) {
-        label = dataItem.label;
-        if (dataItem.children && value[1]) {
-          dataItem.children.forEach(cItem => {
-            if (cItem.value === value[1]) {
-              label += ` ${cItem.label}`;
-            }
-          });
-        }
-      }
-    });
-    console.log(label);
-  };
-  handleClick = e => {
-    e.preventDefault(); // Fix event propagation on Android
-    this.setState({
-      show: !this.state.show,
-    });
-    // mock for async data loading
-    if (!this.state.initData) {
-      setTimeout(() => {
-        this.setState({
-          initData: data,
-        });
-      }, 500);
-    }
-  };
 
-  onMaskClick = () => {
-    this.setState({
-      show: false,
-    });
-  };
-
-  render() {
-    const { initData, show } = this.state;
-    const menuEl = (
-      <Menu
-        className="foo-menu"
-        data={initData}
-        value={['1', '3']}
-        onChange={this.onChange}
-        height={document.documentElement.clientHeight * 0.6}
-      />
-    );
-    const loadingEl = (
+  renderContent(pageText) {
+    return (
       <div
         style={{
-          width: '100%',
-          height: document.documentElement.clientHeight * 0.6,
-          display: 'flex',
-          justifyContent: 'center',
+          backgroundColor: 'white',
+          height: '100%',
+          textAlign: 'center',
         }}
       >
-        <ActivityIndicator size="large" />
+        <div style={{ paddingTop: 60 }}>
+          Clicked “{pageText}” tab， show “{pageText}” information
+        </div>
+        <span
+          style={{
+            display: 'block',
+            marginTop: 40,
+            marginBottom: 20,
+            color: '#108ee9',
+          }}
+          onClick={e => {
+            e.preventDefault();
+            this.setState({
+              hidden: !this.state.hidden,
+            });
+          }}
+        >
+          Click to show/hide tab-bar
+        </span>
+        <span
+          style={{ display: 'block', color: '#108ee9' }}
+          onClick={e => {
+            e.preventDefault();
+          }}
+        >
+          Click to switch fullscreen
+        </span>
       </div>
     );
+  }
+
+  render() {
+    let { tabItems, tabBarItem } = this.state;
+    tabBarItem = tabItems.map((item, index) => {
+      return (
+        <TabBar.Item
+          title={item.name}
+          key={item.name}
+          icon={<div className={'itemIcon ' + item.class} />}
+          selectedIcon={<div className={'itemIcon ' + item.classActive} />}
+          selected={this.state.selectedTab === item.id}
+          onPress={() => {
+            this.setState({
+              selectedTab: item.id,
+            });
+          }}
+        >
+          {this.renderContent(item.name)}
+        </TabBar.Item>
+      );
+    });
     return (
-      <div className={show ? 'menu-active' : ''}>
-        <div>
-          <NavBar
-            leftContent="Menu"
-            mode="light"
-            icon={
-              <img
-                src="https://gw.alipayobjects.com/zos/rmsportal/iXVHARNNlmdCGnwWxQPH.svg"
-                className="am-icon am-icon-md"
-                alt=""
-              />
-            }
-            onLeftClick={this.handleClick}
-            className="top-nav-bar"
-          >
-            Here is title
-          </NavBar>
-        </div>
-        {show ? (initData ? menuEl : loadingEl) : null}
-        {show ? <div className="menu-mask" onClick={this.onMaskClick} /> : null}
+      <div className="home">
+        <TabBar
+          unselectedTintColor="#949494"
+          tintColor="#00aa98"
+          barTintColor="white"
+          hidden={this.state.hidden}
+        >
+          {tabBarItem}
+        </TabBar>
       </div>
     );
   }
 }
+
 export default home;
