@@ -8,7 +8,7 @@ class home extends Component {
         this.state = {
             selectedTab: 1,
             hidden: false,
-            // fullScreen: false,
+            fullScreen: false,
             tabItems: [
                 {
                     id: 1,
@@ -70,17 +70,12 @@ class home extends Component {
                     backgroundColor: 'white',
                     height: '100%',
                     textAlign: 'center',
-                }}
-            >
+                }}>
                 <div style={{ paddingTop: 60 }}>
                     {`Clicked “${pageText}” tab， show “${pageText}” information`}
                 </div>
-                <span>
-          Click to show/hide tab-bar
-                </span>
-                <span>
-          Click to switch fullscreen
-                </span>
+                <span>Click to show/hide tab-bar</span>
+                <span>Click to switch fullscreen</span>
             </div>
         );
     }
@@ -116,9 +111,8 @@ class home extends Component {
                     unselectedTintColor='#949494'
                     tintColor='#00aa98'
                     barTintColor='white'
-                    hidden={hidden}
-                >
-                    {tabBarItem}
+                    hidden={ hidden }>
+                    { tabBarItem }
                 </TabBar>
             </div>
         );

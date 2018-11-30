@@ -20,7 +20,6 @@ module.exports = {
   },
   extends: ["eslint:recommended", "airbnb-base"],
   rules: {
-    "import/first": 0,
     // 指定数组的元素之间要以空格隔开(, 后面)
     "array-bracket-spacing": [2, "never"],
     // 禁止或强制在单行代码块中使用空格(禁用)
@@ -102,6 +101,14 @@ module.exports = {
     // 不允许对 function 的参数进行重新赋值
     "no-param-reassign": 0,
     // 强制操作符使用一致的换行符
-    "operator-linebreak": 0
+    "operator-linebreak": 0,
+    // 要求使用 const 声明那些声明后不再被修改的变量
+    "prefer-const": 0,
+    // 禁止可以在有更简单的可替代的表达式时使用三元操作符
+    "no-unneeded-ternary": 2,
+    // 不允许多个空行
+    "no-multiple-empty-lines": [2, {
+      "max": 2
+    }],
   }
 };
