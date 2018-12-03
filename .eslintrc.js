@@ -6,7 +6,7 @@ module.exports = {
     parser: "babel-eslint",
     sourceType: "module",
     ecmaFeatures: {
-      experimentalObjectRestSpread: true,
+      // experimentalObjectRestSpread: true,
       jsx: true
     }
   },
@@ -110,5 +110,10 @@ module.exports = {
     "no-multiple-empty-lines": [2, {
       "max": 2
     }],
+    'import/no-named-as-default': 0,
+    // 禁止使用特定的语法
+    "no-restricted-syntax": 0,
+    // 要求 for-in 循环中有一个 if 语句
+    "guard-for-in": 0,
   }
 };

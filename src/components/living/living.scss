@@ -1,0 +1,17 @@
+.living-header{
+  display: flex;
+  flex-direction: row;
+  padding: 0 10px;
+  background: #f2f7fc;
+  border-bottom: 1px solid #bebebe;
+  .header-item{
+    width: 33.33%;
+    height: 50px;
+    .am-list-item {
+      background-color: inherit !important;
+      .am-list-line .am-list-extra {
+        flex-basis: 80%;
+      }
+    }
+  }
+}

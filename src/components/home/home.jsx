@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { TabBar } from 'antd-mobile';
+import Living from '../living/living.jsx';
 import './home.scss';
+import api from '../../api/index.jsx';
 
 class home extends Component {
     constructor(props) {
@@ -16,10 +18,10 @@ class home extends Component {
                     class: 'living',
                     classActive: 'living-active',
                     style: {
-                        backgroundImage: `url('${require('../assets/images/ball.png')}')`,
+                        backgroundImage: `url('${require('../../assets/images/ball.png')}')`,
                     },
                     styleActive: {
-                        backgroundImage: `url('${require('../assets/images/ball-active.png')}')`,
+                        backgroundImage: `url('${require('../../assets/images/ball-active.png')}')`,
                     },
                 },
                 {
@@ -28,10 +30,10 @@ class home extends Component {
                     class: 'news',
                     classActive: 'news-active',
                     style: {
-                        backgroundImage: `url('${require('../assets/images/news.png')}')`,
+                        backgroundImage: `url('${require('../../assets/images/news.png')}')`,
                     },
                     styleActive: {
-                        backgroundImage: `url('${require('../assets/images/news-active.png')}')`,
+                        backgroundImage: `url('${require('../../assets/images/news-active.png')}')`,
                     },
                 },
                 {
@@ -40,10 +42,10 @@ class home extends Component {
                     class: 'rank',
                     classActive: 'rank-active',
                     style: {
-                        backgroundImage: `url('${require('../assets/images/rank.png')}')`,
+                        backgroundImage: `url('${require('../../assets/images/rank.png')}')`,
                     },
                     styleActive: {
-                        backgroundImage: `url('${require('../assets/images/rank-active.png')}')`,
+                        backgroundImage: `url('${require('../../assets/images/rank-active.png')}')`,
                     },
                 },
                 {
@@ -52,15 +54,19 @@ class home extends Component {
                     class: 'stats',
                     classActive: 'stats-active',
                     style: {
-                        backgroundImage: `url('${require('../assets/images/stats.png')}')`,
+                        backgroundImage: `url('${require('../../assets/images/stats.png')}')`,
                     },
                     styleActive: {
-                        backgroundImage: `url('${require('../assets/images/stats-active.png')}')`,
+                        backgroundImage: `url('${require('../../assets/images/stats-active.png')}')`,
                     },
                 },
             ],
             tabBarItem: [],
         };
+    }
+
+    componentDidMount() {
+        api.nab_schedule();
     }
 
     renderContent(pageText) {
@@ -88,13 +94,18 @@ class home extends Component {
             <TabBar.Item
                 title={item.name}
                 key={item.name}
-                icon={<div className={`itemIcon ${item.class}`} style={item.style} />}
-                selectedIcon={(
+                icon={
+                    <div
+                        className={`itemIcon ${item.class}`}
+                        style={item.style}
+                    />
+                }
+                selectedIcon={
                     <div
                         className={`itemIcon ${item.classActive}`}
                         style={item.styleActive}
                     />
-                )}
+                }
                 selected={selectedTab === item.id}
                 onPress={() => {
                     this.setState({
@@ -102,7 +113,7 @@ class home extends Component {
                     });
                 }}
             >
-                {this.renderContent(item.name)}
+                <Living />
             </TabBar.Item>
         ));
         return (
