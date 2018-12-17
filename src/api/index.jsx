@@ -2,7 +2,7 @@ import request from '../utils/request.jsx';
 
 
 const api = {
-    nab_schedule(params) {
+    nba_schedule(params) {
         return request('post', 'Nba.schedule', params);
     },
 };

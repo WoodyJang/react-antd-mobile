@@ -1,6 +1,7 @@
 import axios from 'axios';
 import qs from 'qs';
 import md5 from 'md5';
+import { Toast } from 'antd-mobile';
 
 const baseURL = '?service=';
 const appkey = '6fc18957ce391f84a7ce34ce13cd99c4';
@@ -40,7 +41,17 @@ export default function request(method, url, params) {
     }, error => Promise.reject(error));
 
     // 添加相应拦截器
-    instance.interceptors.response.use(response => response, error => Promise.reject(error));
+    instance.interceptors.response.use((response) => {
+        const { data } = response;
+
+        if (data && +data.ret === 200) {
+            return Promise.resolve(data.data);
+        }
+
+        Toast.fail(data.msg, 1);
+        return Promise.reject(data);
+    },
+    error => Promise.reject(error));
     params = params || {};
     params.timestamp = +new Date();
     params.sign = getSign(params);

@@ -61,34 +61,40 @@ class home extends Component {
                     },
                 },
             ],
-            tabBarItem: [],
+            livingData: {},
         };
+        this.bindDateChange = this.bindDateChange.bind(this);
+        this.bindData = this.bindData.bind(this);
     }
 
     componentDidMount() {
-        api.nab_schedule();
+        this.nba_schedule();
     }
 
-    renderContent(pageText) {
-        return (
-            <div
-                style={{
-                    backgroundColor: 'white',
-                    height: '100%',
-                    textAlign: 'center',
-                }}>
-                <div style={{ paddingTop: 60 }}>
-                    {`Clicked “${pageText}” tab， show “${pageText}” information`}
-                </div>
-                <span>Click to show/hide tab-bar</span>
-                <span>Click to switch fullscreen</span>
-            </div>
-        );
+    async nba_schedule(params) {
+        let res = await api.nba_schedule({
+            date: params,
+        });
+
+        console.log(res);
+        this.setState({
+            livingData: res.data,
+        });
+    }
+
+    bindDateChange(value) {
+        this.nba_schedule(value);
+    }
+
+    bindData(time) {
+        this.nba_schedule(time);
     }
 
     render() {
-        const { tabItems, selectedTab, hidden } = this.state;
-        let { tabBarItem } = this.state;
+        const {
+            tabItems, selectedTab, hidden, livingData,
+        } = this.state;
+        let tabBarItem;
 
         tabBarItem = tabItems.map(item => (
             <TabBar.Item
@@ -113,7 +119,7 @@ class home extends Component {
                     });
                 }}
             >
-                <Living />
+                {selectedTab === 1 && <Living lists={livingData} bindDateChange={this.bindDateChange} bindData={this.bindData}/>}
             </TabBar.Item>
         ));
         return (
